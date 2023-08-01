@@ -8,13 +8,13 @@ npm i @msc24x/xobserver
 
 ## Methods
 
-### XObserver.ping(scope: string, threshold: number): IntersectionObserver
+### `XObserver.ping(scope: string, threshold: number): IntersectionObserver`
 Initialize/prepare one IntersectionObserver as long as the scope is same.
 
 
-### XObserver.subscribe(scope: string, element: Element, callback: XObserverCallback): void
+### `XObserver.subscribe(scope: string, element: Element, callback: XObserverCallback): void`
 Equivalent to calling .observe on IntersectionObserver
 
 
-### XObserver.unsubscribe(scope: string, element: Element): void
+### `XObserver.unsubscribe(scope: string, element: Element): void`
 Equivalent to calling .unobserve on IntersectionObserver.
