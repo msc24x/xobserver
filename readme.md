@@ -1,9 +1,9 @@
 ## XObserver
 XObserver eliminates the usage of multiple instances of IntersectionObserver, by providing a scope based initialization of single IntersectionObsever and a few methods to intract with it.
 
-#### npm
-yarn add @msc24x/xobserver
 #### yarn
+yarn add @msc24x/xobserver
+#### npm
 npm i @msc24x/xobserver
 
 ## Methods
