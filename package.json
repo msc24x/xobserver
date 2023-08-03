@@ -7,6 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
   },
+  "files": ["dist", "LICENCE", "package.json", "readme.md"],
+  "keywords": ["intersection-observer", "observer", "optimization"],
   "types": "dist/index.d.ts",
   "author": "Maninderpal Singh",
   "license": "ISC",
