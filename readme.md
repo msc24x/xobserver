@@ -1,5 +1,5 @@
 ## XObserver
-Eliminates multiple instances of IntersectionObserver in your application and element level unique callbacks easily.
+Eliminates multiple instances of IntersectionObserver in your application and allows element level callbacks easily.
 
 
 ## How does it work?
