@@ -7,9 +7,9 @@ type XObserverSubscription = {
 
 type XObserverEntry = {
 	observer: IntersectionObserver;
-	threshold: number;
 	subscribers: XObserverSubscription[];
 };
+
 
 export class XObserver {
 	static xObservers = new Map<string, XObserverEntry>();
@@ -35,13 +35,13 @@ export class XObserver {
 		return null;
 	}
 
-	public static ping(scope: string, threshold: number) {
+    public static ping(scope: string, options: IntersectionObserverInit = {
+        rootMargin: "0px",
+        threshold: 0,
+    }) {
+
 		const observer = this.getEntry(scope);
 		if (observer) {
-			if (observer.threshold !== threshold)
-				console.warn(
-					`[XObserver] scope '${scope}' uses the readonly threshold ${observer.threshold}, to use a different threshold a new scope must be pinged`
-				);
 			return observer.observer;
 		}
 
@@ -52,15 +52,12 @@ export class XObserver {
 					sub?.callback(entry);
 				}
 			},
-			{
-				threshold: threshold
-			}
+			options = options
 		);
 
 		this.xObservers.set(scope, {
 			observer: newObserver,
 			subscribers: [],
-			threshold: threshold
 		});
 
 		return newObserver;
