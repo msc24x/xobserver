@@ -16,11 +16,12 @@ export class XObserver {
         }
         return null;
     }
-    static ping(scope, threshold) {
+    static ping(scope, options = {
+        rootMargin: "0px",
+        threshold: 0,
+    }) {
         const observer = this.getEntry(scope);
         if (observer) {
-            if (observer.threshold !== threshold)
-                console.warn(`[XObserver] scope '${scope}' uses the readonly threshold ${observer.threshold}, to use a different threshold a new scope must be pinged`);
             return observer.observer;
         }
         const newObserver = new IntersectionObserver((entries) => {
@@ -28,13 +29,10 @@ export class XObserver {
                 const sub = this.getSubscriptionByKey(entry.target.id, scope);
                 sub === null || sub === void 0 ? void 0 : sub.callback(entry);
             }
-        }, {
-            threshold: threshold
-        });
+        }, options = options);
         this.xObservers.set(scope, {
             observer: newObserver,
             subscribers: [],
-            threshold: threshold
         });
         return newObserver;
     }
