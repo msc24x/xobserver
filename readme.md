@@ -45,25 +45,18 @@ export default function MyComponent(
 	const ref = useRef<HTMLDivElement>();
 
 	useEffect(() => {
-		XObserver.ping("appearance", 0.3);
-		XObserver.ping("disappearance", 0);
+		XObserver.ping("appearance", { threshold: [0.3, 0] });
 
 		const target = ref.current!;
 
-		XObserver.subscribe(
-			"disappearance",
-			target,
-			(entry :IntersectionObserverEntry) => !entry.isIntersecting && setInView(false)
-		);
-		XObserver.subscribe(
-			"appearance",
-			target,
-			(entry :IntersectionObserverEntry) => entry.isIntersecting && setInView(true)
+		XObserver.subscribe("appearance", target, (entry) =>
+			entry.isIntersecting && entry.intersectionRatio > 0.2
+				? setInView(true)
+				: setInView(false)
 		);
 
 		return () => {
 			XObserver.unsubscribe("appearance", target);
-			XObserver.unsubscribe("disappearance", target);
 		};
 	}, []);
 
