@@ -18,9 +18,9 @@ or
 ## Methods
 
 ### ping
-`XObserver.ping(scope: string, threshold: number): IntersectionObserver`
+`XObserver.ping(scope: string, options: IntersectionObserverInit): void`
 
-Initialize/prepare one IntersectionObserver per given scope. This can be called multiple times, only the first call will create an actual instance. (note: a new scope must be pinged if another threshold is required)
+Initialize/prepare one IntersectionObserver per given scope. This can be called multiple times, only the first call will create an actual instance. (note: a new scope must be pinged if another set of options is required)
 
 
 ### subscribe
