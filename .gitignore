@@ -111,3 +111,5 @@ node_modules/typescript/lib/ru/diagnosticMessages.generated.json
 node_modules/typescript/lib/tr/diagnosticMessages.generated.json
 node_modules/typescript/lib/zh-cn/diagnosticMessages.generated.json
 node_modules/typescript/lib/zh-tw/diagnosticMessages.generated.json
+dist/index.d.ts
+dist/index.js
