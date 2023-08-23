@@ -5,12 +5,12 @@ type XObserverSubscription = {
 };
 type XObserverEntry = {
     observer: IntersectionObserver;
-    subscribers: XObserverSubscription[];
+    subscribers: Map<string, XObserverSubscription>;
 };
 export declare class XObserver {
     static xObservers: Map<string, XObserverEntry>;
     static getSubscriptionByKey(key: string, scope: string): XObserverSubscription | null;
-    static getEntry(scope: string): XObserverEntry | null | undefined;
+    static getEntry(scope: string): XObserverEntry | null;
     /**
      * Application must call this method to ensure the existence of a particular scope
      * @param scope Unique Identifier for a particular use case of IntersectionObserver

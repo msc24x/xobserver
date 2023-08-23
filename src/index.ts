@@ -7,7 +7,7 @@ type XObserverSubscription = {
 
 type XObserverEntry = {
 	observer: IntersectionObserver;
-	subscribers: XObserverSubscription[];
+	subscribers: Map<string, XObserverSubscription>;
 };
 
 
@@ -17,22 +17,13 @@ export class XObserver {
 	static getSubscriptionByKey(key: string, scope: string) {
 		const entry = this.xObservers.get(scope);
 
-		if (!entry?.subscribers) return null;
-
-		for (const sub of entry.subscribers) {
-			if (sub.key === key) {
-				return sub;
-			}
-		}
-
-		return null;
+        if (!entry?.subscribers) return null;
+        
+        return entry.subscribers.get(key) || null
 	}
 
 	static getEntry(scope: string) {
-		if (this.xObservers.has(scope)) {
-			return this.xObservers.get(scope);
-		}
-		return null;
+		return this.xObservers.get(scope) || null;
 	}
 
 
@@ -64,7 +55,7 @@ export class XObserver {
 
 		this.xObservers.set(scope, {
 			observer: newObserver,
-			subscribers: [],
+			subscribers: new Map<string, XObserverSubscription>(),
 		});
 
 		return;
@@ -98,7 +89,7 @@ export class XObserver {
 
 		observer.observer.observe(element);
 
-		observer.subscribers.push({
+		observer.subscribers.set(element.id, {
 			key: element.id,
 			callback: callback
 		});
@@ -119,16 +110,15 @@ export class XObserver {
 		const observerEntry = this.getEntry(scope);
 		if (!observerEntry) return;
 
-		const subscription = this.getSubscriptionByKey(element.id, scope);
+		const subscription = observerEntry.subscribers.get(element.id);
 		if (!subscription) {
 			return;
 		}
 
 		observerEntry.observer.unobserve(element);
-		const subscriptionIndex = observerEntry.subscribers.indexOf(subscription);
-		observerEntry.subscribers.splice(subscriptionIndex, 1);
+		observerEntry.subscribers.delete(element.id);
 
-		if (observerEntry.subscribers.length == 0) {
+		if (observerEntry.subscribers.size == 0) {
 			observerEntry.observer.disconnect();
 			this.xObservers.delete("scope");
 		}

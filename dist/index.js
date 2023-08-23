@@ -3,18 +3,10 @@ export class XObserver {
         const entry = this.xObservers.get(scope);
         if (!(entry === null || entry === void 0 ? void 0 : entry.subscribers))
             return null;
-        for (const sub of entry.subscribers) {
-            if (sub.key === key) {
-                return sub;
-            }
-        }
-        return null;
+        return entry.subscribers.get(key) || null;
     }
     static getEntry(scope) {
-        if (this.xObservers.has(scope)) {
-            return this.xObservers.get(scope);
-        }
-        return null;
+        return this.xObservers.get(scope) || null;
     }
     /**
      * Application must call this method to ensure the existence of a particular scope
@@ -38,7 +30,7 @@ export class XObserver {
         }, options = options);
         this.xObservers.set(scope, {
             observer: newObserver,
-            subscribers: [],
+            subscribers: new Map(),
         });
         return;
     }
@@ -61,7 +53,7 @@ export class XObserver {
             return;
         }
         observer.observer.observe(element);
-        observer.subscribers.push({
+        observer.subscribers.set(element.id, {
             key: element.id,
             callback: callback
         });
@@ -80,14 +72,13 @@ export class XObserver {
         const observerEntry = this.getEntry(scope);
         if (!observerEntry)
             return;
-        const subscription = this.getSubscriptionByKey(element.id, scope);
+        const subscription = observerEntry.subscribers.get(element.id);
         if (!subscription) {
             return;
         }
         observerEntry.observer.unobserve(element);
-        const subscriptionIndex = observerEntry.subscribers.indexOf(subscription);
-        observerEntry.subscribers.splice(subscriptionIndex, 1);
-        if (observerEntry.subscribers.length == 0) {
+        observerEntry.subscribers.delete(element.id);
+        if (observerEntry.subscribers.size == 0) {
             observerEntry.observer.disconnect();
             this.xObservers.delete("scope");
         }
