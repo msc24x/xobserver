@@ -1,11 +1,11 @@
 type XObserverCallback = (entry: IntersectionObserverEntry) => void;
 type XObserverSubscription = {
-    key: string;
-    callback: Function;
+    callback?: XObserverCallback;
 };
 type XObserverEntry = {
     observer: IntersectionObserver;
     subscribers: Map<string, XObserverSubscription>;
+    defCallback?: XObserverCallback;
 };
 export declare class XObserver {
     static xObservers: Map<string, XObserverEntry>;

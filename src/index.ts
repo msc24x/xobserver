@@ -1,13 +1,13 @@
 type XObserverCallback = (entry: IntersectionObserverEntry) => void;
 
 type XObserverSubscription = {
-	key: string;
-	callback: Function;
+	callback?: XObserverCallback;
 };
 
 type XObserverEntry = {
 	observer: IntersectionObserver;
-	subscribers: Map<string, XObserverSubscription>;
+    subscribers: Map<string, XObserverSubscription>;
+	defCallback?: XObserverCallback;
 };
 
 
@@ -33,21 +33,21 @@ export class XObserver {
 	 * @param options They are the {@link IntersectionObserverInit} options 
 	 * @returns void
 	 */
-  	public static ping(scope: string, options: IntersectionObserverInit = {
-        rootMargin: "0px",
-        threshold: 0,
-    }) {
+    public static ping(scope: string, options?: IntersectionObserverInit) {
 
-		const observer = this.getEntry(scope);
-		if (observer) {
+		
+		if (this.xObservers.has(scope)) {
 			return;
 		}
 
+        options ??= {}
 		const newObserver = new IntersectionObserver(
-			(entries) => {
-				for (let entry of entries) {
-					const sub = this.getSubscriptionByKey(entry.target.id, scope);
-					sub?.callback(entry);
+            (entries) => {
+                const observerEntry = this.getEntry(scope);
+                for (const entry of entries) {
+                    const subscription = observerEntry!.subscribers.get(entry.target.id)!
+                    const callback = subscription.callback || observerEntry?.defCallback
+                    callback??(entry)
 				}
 			},
 			options = options
@@ -73,24 +73,24 @@ export class XObserver {
 		element: Element,
 		callback: XObserverCallback
 	) {
-		const observer = this.getEntry(scope);
-		if (!observer) return;
-
 		if (!element.id) {
 			console.error(
 				"[XObserver] subscriber element must have a unique id on it"
 			);
 			return;
-		}
+        }
+        
+		const observerEntry = this.getEntry(scope);
+		if (!observerEntry) return;
 
-		if (this.getSubscriptionByKey(element.id, scope)) {
+
+		if (observerEntry.subscribers.has(element.id)) {
 			return;
 		}
 
-		observer.observer.observe(element);
+		observerEntry.observer.observe(element);
 
-		observer.subscribers.set(element.id, {
-			key: element.id,
+		observerEntry.subscribers.set(element.id, {
 			callback: callback
 		});
 
@@ -109,11 +109,6 @@ export class XObserver {
 	public static unsubscribe(scope: string, element: Element) {
 		const observerEntry = this.getEntry(scope);
 		if (!observerEntry) return;
-
-		const subscription = observerEntry.subscribers.get(element.id);
-		if (!subscription) {
-			return;
-		}
 
 		observerEntry.observer.unobserve(element);
 		observerEntry.subscribers.delete(element.id);
