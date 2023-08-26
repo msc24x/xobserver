@@ -47,7 +47,10 @@ export class XObserver {
                 for (const entry of entries) {
                     const subscription = observerEntry!.subscribers.get(entry.target.id)!
                     const callback = subscription.callback || observerEntry?.defCallback
-                    callback??(entry)
+                    if (callback)
+                        callback(entry)
+                    else
+                        console.warn(`[XObserver] No callback found for element '${entry.target.id}'`)
 				}
 			},
 			options = options

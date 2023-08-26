@@ -24,7 +24,10 @@ export class XObserver {
             for (const entry of entries) {
                 const subscription = observerEntry.subscribers.get(entry.target.id);
                 const callback = subscription.callback || (observerEntry === null || observerEntry === void 0 ? void 0 : observerEntry.defCallback);
-                callback !== null && callback !== void 0 ? callback : (entry);
+                if (callback)
+                    callback(entry);
+                else
+                    console.warn(`[XObserver] No callback found for element '${entry.target.id}'`);
             }
         }, options = options);
         this.xObservers.set(scope, {
