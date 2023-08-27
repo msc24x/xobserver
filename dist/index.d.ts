@@ -17,7 +17,7 @@ export declare class XObserver {
      * @param options They are the {@link IntersectionObserverInit} options
      * @returns void
      */
-    static ping(scope: string, options?: IntersectionObserverInit): void;
+    static ping(scope: string, options?: IntersectionObserverInit, defCallback?: XObserverCallback): void;
     /**
      * Use this static method to subscribe an element to a particular scope.
      * @param scope Unique Identifier for a particular use case of IntersectionObserver

@@ -33,7 +33,7 @@ export class XObserver {
 	 * @param options They are the {@link IntersectionObserverInit} options 
 	 * @returns void
 	 */
-    public static ping(scope: string, options?: IntersectionObserverInit) {
+    public static ping(scope: string, options?: IntersectionObserverInit, defCallback?: XObserverCallback) {
 
 		
 		if (this.xObservers.has(scope)) {
@@ -58,7 +58,8 @@ export class XObserver {
 
 		this.xObservers.set(scope, {
 			observer: newObserver,
-			subscribers: new Map<string, XObserverSubscription>(),
+            subscribers: new Map<string, XObserverSubscription>(),
+            defCallback: defCallback
 		});
 
 		return;
