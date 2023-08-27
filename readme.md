@@ -18,16 +18,20 @@ or
 ## Methods
 
 ### ping
-`XObserver.ping(scope: string, options: IntersectionObserverInit): void`
+`XObserver.ping(scope: string, options?: IntersectionObserverInit, defCallback?: XObserverCallback)): void`
 
-Initialize/prepare one IntersectionObserver per given scope. This can be called multiple times, only the first call will create an actual instance. (note: a new scope must be pinged if another set of options is required)
+Initialize/prepare one IntersectionObserver per given scope. A default callback for each subscriber can also be provided at the scope level, using defCallback. This can be called multiple times, only the first call will create an actual instance.
+
+- A new scope must be pinged if another set of options is required
+- defCallback for an element will be ignored if a callback was provided for that element during `.subscribe`
+
 
 
 ### subscribe
-`XObserver.subscribe(scope: string, element: Element, callback: XObserverCallback): void`
+`XObserver.subscribe(scope: string, element: Element, callback?: XObserverCallback): void`
 
 Subscribe the element to the observer. Be aware that the callback provided is invoked only for given particular element.
-(note: The element must have a unique ID assigned to it)
+- The element must have a unique ID assigned to it
 
 ### unsubscribe
 `XObserver.unsubscribe(scope: string, element: Element): void`
