@@ -75,7 +75,7 @@ export class XObserver {
 	public static subscribe(
 		scope: string,
 		element: Element,
-		callback: XObserverCallback
+		callback?: XObserverCallback
 	) {
 		if (!element.id) {
 			console.error(

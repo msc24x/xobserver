@@ -25,7 +25,7 @@ export declare class XObserver {
      * @param callback Callback ({@link XObserverCallback}) when the element intersects
      * @returns void
      */
-    static subscribe(scope: string, element: Element, callback: XObserverCallback): void;
+    static subscribe(scope: string, element: Element, callback?: XObserverCallback): void;
     /**
      * Use this when an element is no longer required to be observed.
      *
