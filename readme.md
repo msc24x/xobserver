@@ -1,6 +1,7 @@
 ## XObserver
 Eliminates multiple instances of IntersectionObserver in your application and allows element level callbacks easily.
 
+[![npm version](https://badge.fury.io/js/@msc24x%2Fxobserver.svg)](https://badge.fury.io/js/@msc24x%2Fxobserver)
 
 ## How does it work?
 1. XObserver simply maintains a global repository of the IntersectionObservers your application will use. Each global instance have a unique identifier called scope. Those instances can be ensured to be available by calling the `.ping` method under that particular scope.
