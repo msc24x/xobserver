@@ -119,7 +119,7 @@ export class XObserver {
 
 		if (observerEntry.subscribers.size == 0) {
 			observerEntry.observer.disconnect();
-			this.xObservers.delete("scope");
+			this.xObservers.delete(scope);
 		}
 		return;
 	}
